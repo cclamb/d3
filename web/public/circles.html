@@ -1,0 +1,38 @@
+<html>
+<body>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+<svg width="500" height="500">
+<circle cx="50" cy="25" r="25" fill="purple" />
+<circle cx="150" cy="25" r="25" fill="red" />
+<circle cx="250" cy="25" r="25" fill="navy" />
+</svg>
+
+<script>
+
+var width = 500;
+var offset = 100;
+var data = [5, 25, 50];
+generator = function() { return (Math.random() *  (width - offset * 2)) + offset; }
+
+//var svg = d3.select("body").append("svg")
+var circle = d3.selectAll("circle");
+circle.style("fill", "steelblue");
+
+circle.data(data);
+
+circle.attr("r", function(datum) {
+  return datum;
+});
+
+circle.attr("cx", function() {
+  return generator();
+});
+
+circle.attr("cy", function() {
+  return generator();
+});
+
+</script>
+</body>
+</html>
