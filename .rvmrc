@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+# Copied from the RVM project: http://rvm.io
+
+# ruby_string="ruby-1.9.3-p362"
+ruby_string="ruby-2.0.0"
+gemset_name="ds3"
+
+if rvm list strings | grep -q "${ruby_string}" ; then
+
+
+  # Load or create the specified environment
+  if [[ -d "${rvm_path:-$HOME/.rvm}/environments" \
+    && -s "${rvm_path:-$HOME/.rvm}/environments/${ruby_string}@${gemset_name}" ]] ; then
+    \. "${rvm_path:-$HOME/.rvm}/environments/${ruby_string}@${gemset_name}"
+  else
+    rvm --create  "${ruby_string}@${gemset_name}"
+  fi
+
+  rvm use ${ruby_string}
+
+  #(
+    # Ensure that Bundler is installed, install it if it is not.
+    if ! command -v bundle ; then
+      echo "installing bundler..."
+      gem install bundler
+    fi
+
+    bundle
+
+    # Bundle while reducing excess noise.
+    #bundle | grep -v 'Using' | grep -v 'complete' | sed '/^$/d'
+  #)&
+
+ else
+
+   # Notify the user to install the desired interpreter before proceeding.
+   echo "${ruby_string} was not found, please run 'rvm install ${ruby_string}' and then cd back into the project directory."
+
+fi
