@@ -48,7 +48,7 @@ function update(data) {
 	text.enter().append("text")
 		.attr("class", "enter")
 		.attr("dy", ".35em")
-		.attr("y", -60)
+		.attr("y", -160)
 		.attr("x", function(d, i) { return i * 32; })
 		.style("fill-opacity", 1e-6)
 		.text(function(d) { return d; })
@@ -62,7 +62,7 @@ function update(data) {
 		.attr("class", "exit")
 		.transition()
 		.duration(750)
-		.attr("y", 60)
+		.attr("y", 160)
 		.style("fill-opacity", 1e-6)
 		.remove();
 };
