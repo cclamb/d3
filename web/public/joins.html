@@ -1,0 +1,55 @@
+<html>
+<body onclick="replace();">
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script>
+
+var width = 500, 
+  height = width,
+  offset = 100,
+  data = [ {x: 50, y: 50, r: 33}, 
+  {x: 100, y: 100, r: 33}, 
+  {x: 150, y: 150, r: 33}, 
+  {x: 200, y: 200, r: 33}];
+
+var d = {
+  x: 50,
+  y: 50,
+  r: 33
+};
+
+generator = function() { return (Math.random() *  (width - offset * 2)) + offset; }
+
+var svg = d3.select("body").append("svg")
+  .attr("width", width)
+  .attr("height", height);
+
+circle = svg.selectAll("circle")
+  .data(data)
+  .enter()
+  .append("circle")
+  .attr("cx", function(d) { return d.x; })
+  .attr("cy", function(d) { return d.y; })
+  .attr("r", function(d) {return d.r; });
+
+replace = function() {
+  data = [{x: 50, y: 50, r: 33}, 
+   {x: 100, y: 100, r: 33}, 
+   {x: 150, y: 150, r: 33}];
+
+  circle.data(data)
+    .exit()
+    .transition()
+    .attr("r", 0)
+    .remove();
+}
+
+
+
+// svg.append("circle")
+//   .attr("cx", d.x)
+//   .attr("cy", d.y)
+//   .attr("r", d.r);
+
+</script>
+</body>
+</html>
