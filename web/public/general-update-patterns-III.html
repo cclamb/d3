@@ -14,6 +14,10 @@ text {
   fill: #333;
 }
 
+.exit {
+  fill: brown;
+}
+
 </style>
 <body>
 <script src="http://d3js.org/d3.v2.min.js?2.10.1"></script>
@@ -32,21 +36,35 @@ function update(data) {
 
 	// Join the new data with the old elements.
 	var text = svg.selectAll("text")
-		.data(data);
+		.data(data, function(d) { return d; });
 
 	// Update the old elements if they exist.
-	text.attr("class", "update");
+	text.attr("class", "update")
+		.transition()
+		.duration(750)
+		.attr("x", function(d, i) { return i * 32; });
 
 	// Create any needed new elements.
 	text.enter().append("text")
 		.attr("class", "enter")
+		.attr("dy", ".35em")
+		.attr("y", -60)
 		.attr("x", function(d, i) { return i * 32; })
-		.attr("dy", ".35em");
-
-	text.text(function(d) { return d; });
+		.style("fill-opacity", 1e-6)
+		.text(function(d) { return d; })
+		.transition()
+		.duration(750)
+		.attr("y", 0)
+		.style("fill-opacity", 1);
 
 	// removing old.
-	text.exit().remove();
+	text.exit()
+		.attr("class", "exit")
+		.transition()
+		.duration(750)
+		.attr("y", 60)
+		.style("fill-opacity", 1e-6)
+		.remove();
 };
 
 update(alphabet);
