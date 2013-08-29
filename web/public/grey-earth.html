@@ -12,6 +12,12 @@ body {
   stroke-linejoin: round;
 }
 
+#states {
+  fill: #025;
+  stroke: #555;
+  stroke-linejoin: round;
+}
+
 </style>
 <body>
 <script src="http://d3js.org/d3.v3.min.js"></script>
@@ -38,24 +44,36 @@ var svg = d3.select("body").append("svg")
 d3.json("us.json", function(error, us) {
   var defs = svg.append("defs");
 
+  // defs.append("path")
+  //     .datum(topojson.feature(us, us.objects.land))
+  //     .attr("id", "land")
+  //     .attr("d", path);
+
   defs.append("path")
-      .datum(topojson.feature(us, us.objects.land))
-      .attr("id", "land")
+      .datum(topojson.feature(us, us.objects.states))
+      .attr("id", "states")
       .attr("d", path);
+
+    // svg.append("clipPath")
+    //   .attr("id", "clip")
+    // .append("use")
+    //   .attr("xlink:href", "#land");
 
   svg.append("clipPath")
       .attr("id", "clip")
     .append("use")
-      .attr("xlink:href", "#land");
+      .attr("xlink:href", "#states");
 
   // svg.append("image")
   //     .attr("clip-path", "url(#clip)")
   //     .attr("xlink:href", "shaded-relief.png")
   //     .attr("width", width)
   //     .attr("height", height);
+  // svg.append("use")
+  //     .attr("xlink:href", "#land");
 
   svg.append("use")
-      .attr("xlink:href", "#land");
+      .attr("xlink:href", "#states");
 });
 
 d3.select(self.frameElement).style("height", height + "px");
