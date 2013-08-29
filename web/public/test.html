@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<title>FEAR Representation</title>
+<body>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script>
+
+var width = 960,
+	height = 500,
+	svg = d3.select("body").append("svg")
+		.attr("height", height)
+		.attr("width", width)
+		.append("g")
+		.attr("transform", "translate(32," + (height/2) +")");
+
+d3.csv("data.csv", function(data) {
+  console.log(data);
+
+  // var ages = d3.keys(states[0]).filter(function(key) {
+  //   return key != "State" && key != "Total";
+  // });
+
+  // states.forEach(function(state) {
+  //   ages.forEach(function(age) {
+  //     state[age] = state[age] / state.Total;
+  //   });
+  // });
+
+  // menu.selectAll("option")
+  //     .data(ages)
+  //   .enter().append("option")
+  //     .text(function(d) { return d; });
+
+  // menu.property("value", "18 to 24 Years");
+
+  // redraw();
+});
+
+</script>
+</body>
+</html>
