@@ -1,5 +1,5 @@
 <html>
-<body onclick="start();">
+<body onclick="start();" bgcolor="black">
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script>
 
@@ -34,7 +34,9 @@ var enter = svg.selectAll("circle")
   .data(data)
   .enter()
   .append("circle")
-  .style("fill", "navy")
+  .style("stroke", "white")
+  .style("stroke-width", 100)
+  .style("fill", "white")
   .attr("r", function(d) {
     return d;
   })
@@ -45,8 +47,10 @@ function start() {
     if (!xition) {
       enter.transition()
         .attr("r", 100)
+        .duration(1000)
         .style("fill", "orange")
-        .style("opacity", 0);
+        .style("opacity", 0)
+        .style("lighting-color", "red");
       xition = true;
     } else {
       enter.attr("r", function(d) {
