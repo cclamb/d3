@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <title></title>
 </head>
-<body bgcolor="black">
+<body onclick="start();" bgcolor="black">
   <script src="http://d3js.org/d3.v3.min.js"></script>
   <script>
 
@@ -34,7 +34,7 @@ var gradient = defs.append('radialGradient')
     .attr('id', 'fadient');
 
 gradient.append('stop')
-    .attr('offset', '30%')
+    .attr('offset', '1%')
     .attr('stop-color', 'white')
     .attr('stop-opacity', 1)
 
@@ -61,6 +61,15 @@ svg.selectAll("circle")
   .attr('mask', 'url(#mask)')
   .attr("fill", function (d, i) { return color(i); });
 
+
+function start() {
+	svg.selectAll("circle")
+		.transition()
+        .attr("r", function(d) { return d.radius * 2; })
+        .duration(1000)
+        .style("fill", "orange")
+        .style("opacity", 100);
+}
 
   </script>
 </body>
