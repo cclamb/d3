@@ -24,8 +24,16 @@ body {
 <script src="http://d3js.org/topojson.v1.min.js"></script>
 <script>
 
+
 var width = 960,
-    height = 600;
+    height = 600,
+    colors = {};
+
+colors['evtype1'] = 'red';
+colors['evtype2'] = 'green';
+colors['evtype3'] = 'yellow';
+colors['evtype4'] = 'orange';
+colors['evtype5'] = 'white';
 
 var projection = d3.geo.azimuthalEqualArea()
     .scale(width)
@@ -44,48 +52,17 @@ var svg = d3.select("body").append("svg")
 d3.json("us.json", function(error, us) {
   var defs = svg.append("defs");
 
-  // defs.append("path")
-  //     .datum(topojson.feature(us, us.objects.land))
-  //     .attr("id", "land")
-  //     .attr("d", path);
-
   defs.append("path")
       .datum(topojson.feature(us, us.objects.states))
       .attr("id", "states")
       .attr("d", path);
-
-    // svg.append("clipPath")
-    //   .attr("id", "clip")
-    // .append("use")
-    //   .attr("xlink:href", "#land");
 
   svg.append("clipPath")
       .attr("id", "clip")
     .append("use")
       .attr("xlink:href", "#states");
 
-  // svg.append("image")
-  //     .attr("clip-path", "url(#clip)")
-  //     .attr("xlink:href", "shaded-relief.png")
-  //     .attr("width", width)
-  //     .attr("height", height);
-  // svg.append("use")
-  //     .attr("xlink:href", "#land");
-
   d3.csv("fear.csv", function(data) { 
-
-    // var enter = svg.selectAll("circle")
-    //   .data(data, function(d) { return d.id; })
-    //   .enter()
-    //   .append("circle")
-    //   .style("fill", "red")
-    //   .attr("r", 1)
-    //   .attr("cx", function(d) { 
-    //       return projection([d.longitude, d.latitude])[0];
-    //   })
-    //   .attr("cy", function(d) { 
-    //       return projection([d.longitude, d.latitude])[1];
-    //   });
 
     svg.selectAll('circle')
         .data(data, function(d) { return d.id; })
@@ -93,15 +70,15 @@ d3.json("us.json", function(error, us) {
           .attr('cx', function (d) { return projection([d.longitude, d.latitude])[0]; })
           .attr('cy', function (d) { return projection([d.longitude, d.latitude])[1]; })
           .attr('r', function(d) { return 1; })
-          .attr('fill', 'red')
+          .attr('fill', function(d) { return colors[d.type]; })
         .transition()
           .attr('r', function(d) { return 5; })
           .duration(5000)
-          .style('opacity', .2)
+          .style('opacity', 0.05)
         .transition()
           .attr('r', function(d) { return 1; })
-          .attr('fill', 'red')
-          .duration(0)
+          .attr('fill', function(d) { return colors[d.type]; })
+          .duration(1)
           .style('opacity', 1);
 
   });
