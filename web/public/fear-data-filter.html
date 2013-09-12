@@ -24,14 +24,13 @@ body {
 <script src="http://d3js.org/topojson.v1.min.js"></script>
 <script>
 
-
 var width = 960,
     height = 600,
     dateGate = new Date(2013, 0, 4, 14),
     fearData = [],
     counter = 0,
-    timeStep = 86400000 / 2, // 1 hour in millisecs = 3600000, 1 day = 86400000
-    intervalStep = 500,
+    timeStep = 86400000 / 12, // 1 hour in millisecs = 3600000, 1 day = 86400000
+    intervalStep = 250,
     duration = 500,
     colors = {};
 
@@ -94,21 +93,21 @@ var intervalId = setInterval(function() {
   dateGate = incrementTime(timeStep, dateGate);
 
   svg.selectAll('circle')
-      .data(data, function(d) { return d.id; })
-      .enter().append('circle')
-        .attr('cx', function (d) { return projection([d.longitude, d.latitude])[0]; })
-        .attr('cy', function (d) { return projection([d.longitude, d.latitude])[1]; })
-        .attr('r', function(d) { return 1; })
-        .attr('fill', function(d) { return colors[d.type]; })
-      .transition()
-        .attr('r', function(d) { return 10; })
-        //.duration(duration)
-        .style('opacity', 0)
-      .transition()
-        .attr('r', function(d) { return 1; })
-        .attr('fill', function(d) { return colors[d.type]; })
-        .duration(1)
-        .style('opacity', 1);
+    .data(data, function(d) { return d.id; })
+    .enter().append('circle')
+      .attr('cx', function (d) { return projection([d.longitude, d.latitude])[0]; })
+      .attr('cy', function (d) { return projection([d.longitude, d.latitude])[1]; })
+      .attr('r', function(d) { return 1; })
+      .attr('fill', function(d) { return colors[d.type]; })
+    .transition()
+      .attr('r', function(d) { return 10; })
+      .duration(duration)
+      .style('opacity', 0)
+    .transition()
+      .attr('r', function(d) { return 1; })
+      .attr('fill', function(d) { return colors[d.type]; })
+      .duration(1)
+      .style('opacity', 1);
 
   if (data.length >= fearData.length) {
     console.log('finished.');
