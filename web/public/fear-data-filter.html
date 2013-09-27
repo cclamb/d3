@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html>
 <meta charset="utf-8">
 <style>
 
@@ -18,15 +19,95 @@ body {
   stroke-linejoin: round;
 }
 
+.buttons {
+  background-color: #aaf;
+  border-color: #aaf #aad #aab;
+  width: 100px;
+  height: 20px;
+}
+
+.buttons:disabled {
+  background-color: #aaf;
+}
+
+.date {
+  color: #ddf;
+}
+
+.evt1legend {
+  color: red;
+  display: inline-block;
+  width: 20%;
+  text-align: center;
+}
+
+.evt2legend {
+  color: green;
+  display: inline-block;
+  width: 20%;
+  text-align: center;
+}
+
+.evt3legend {
+  color: yellow;
+  display: inline-block;
+  width: 20%;
+  text-align: center;
+}
+
+.evt4legend {
+  color: orange;
+  display: inline-block;
+  width: 19%;
+  text-align: center;
+}
+
+.evt5legend {
+  color: white;
+  display: inline-block;
+  width: 19%;
+  text-align: center;
+}
+
+.legend {
+  margin: 2px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #555;
+  background-color: #025;
+  table-layout: fixed;
+}
+
 </style>
 <body>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="http://d3js.org/topojson.v1.min.js"></script>
+<div class="legend">
+<button class="buttons" 
+  id="startButton" 
+  type="button" 
+  onclick="startAnimation();">start</button>
+<button class="buttons" 
+  id="pauseButton" 
+  type="button"
+  disabled="disabled"
+  onclick="pauseAnimation();">pause</button>
+<span class="date">current date: </span>
+<span id="simDate" class="date">&lt;simulated date&gt;</span>
+</div>
+<div class="legend">
+<span class="evt1legend">Event Type 1</span>
+<span class="evt2legend">Event Type 2</span>
+<span class="evt3legend">Event Type 3</span>
+<span class="evt4legend">Event Type 4</span>
+<span class="evt5legend">Event Type 5</span>
+</div>
 <script>
 
 var width = 960,                          // SVG area width
     height = 600,                         // And height
-    dateGate = new Date(2013, 0, 4, 14),  // This is used as the initial time; it is incremented during the animation
+    startDate = new Date(2013, 0, 4, 14), // The original time, used to reset
+    dateGate = new Date(startDate),                 // This is used as the initial time; it is incremented during the animation
     fearData,                             // A reference to the ingested and pre-processed data
     timeStep = 86400000 / 12,             // 1 hour in millisecs = 3600000 ms, 1 day = 86400000 ms
     intervalStep = 250,                   // The real duration of an animation step, in millisections
@@ -36,6 +117,7 @@ var width = 960,                          // SVG area width
     finalSize = 1,                        // The bloom reminant size
     bloomOpacity = 0,                     // The final opacity of the bloom
     colors = {};                          // An object literal used as an associative array to contain colors for events
+    isPaused = true;
 
 // Color table for events.
 colors['evtype1'] = 'red';
@@ -102,39 +184,6 @@ d3.csv("fear.csv", function(data) {
 
 });
 
-// Here, we animate event firings.  We order the preprocessed data by event date.
-var intervalId = setInterval(function() {
-
-  // Filter and increment the date.
-  var data = filterData(fearData, dateGate);
-  dateGate = incrementTime(timeStep, dateGate);
-
-  // Add new data to the map.  This will create an initial bloom showing event detection,
-  // after which the event will remain on the map, color-coded based on event type.
-  svg.selectAll('circle')
-    .data(data, function(d) { return d.id; })
-    .enter().append('circle')
-      .attr('cx', function (d) { return projection([d.longitude, d.latitude])[0]; })
-      .attr('cy', function (d) { return projection([d.longitude, d.latitude])[1]; })
-      .attr('r', function(d) { return initialSize; })
-      .attr('fill', function(d) { return colors[d.type]; })
-    .transition()
-      .attr('r', function(d) { return bloomSize; })
-      .duration(duration)
-      .style('opacity', bloomOpacity)
-    .transition()
-      .attr('r', function(d) { return finalSize; })
-      .attr('fill', function(d) { return colors[d.type]; })
-      .duration(1)
-      .style('opacity', 1);
-
-  if (data.length >= fearData.length) {
-    console.log('finished.');
-    clearInterval(intervalId);
-  }
-
-}, intervalStep);
-
 // Filtering data by date.
 function filterData(data, date) {
   // A stack to store valid data.
@@ -159,4 +208,93 @@ function incrementTime(millis, date) {
   return date;
 } 
 
+// Pausing or continuing an animation.
+function pauseAnimation() {
+  isPaused = !isPaused;
+  if (isPaused) {
+    d3.select('#pauseButton').html('continue');
+  } else {
+    d3.select('#pauseButton').html('pause');
+  }
+}
+
+// Starting an animation.
+function startAnimation() {
+  isPaused = false;
+  dateGate = new Date(startDate);
+
+  // Setting disabled state.
+  document.getElementById('pauseButton').disabled = false;
+  document.getElementById('startButton').disabled = true;
+
+  // Remove the old SVG element.
+  d3.select('svg').remove();
+
+  // Add a new SVG element.
+  var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+  // Load new map data.
+  d3.json("us.json", function(error, us) {
+
+    var defs = svg.append("defs");
+
+    defs.append("path")
+        .datum(topojson.feature(us, us.objects.states))
+        .attr("id", "states")
+        .attr("d", path);
+
+    svg.append("clipPath")
+        .attr("id", "clip")
+      .append("use")
+        .attr("xlink:href", "#states");
+
+    svg.append("use")
+        .attr("xlink:href", "#states");
+
+  });
+
+  intervalId = setInterval(function() {
+
+    if (isPaused) return;
+
+    // Filter and increment the date.
+    var data = filterData(fearData, dateGate);
+    dateGate = incrementTime(timeStep, dateGate);
+
+    // Add new data to the map.  This will create an initial bloom showing event detection,
+    // after which the event will remain on the map, color-coded based on event type.
+    d3.select('svg').selectAll('circle')
+      .data(data, function(d) { return d.id; })
+      .enter().append('circle')
+        .attr('cx', function (d) { return projection([d.longitude, d.latitude])[0]; })
+        .attr('cy', function (d) { return projection([d.longitude, d.latitude])[1]; })
+        .attr('r', function(d) { return initialSize; })
+        .attr('fill', function(d) { return colors[d.type]; })
+      .transition()
+        .attr('r', function(d) { return bloomSize; })
+        .duration(duration)
+        .style('opacity', bloomOpacity)
+      .transition()
+        .attr('r', function(d) { return finalSize; })
+        .attr('fill', function(d) { return colors[d.type]; })
+        .duration(1)
+        .style('opacity', 1);
+
+    d3.select('#simDate').html(dateGate);
+
+    if (data.length >= fearData.length) {
+      console.log('finished.');
+      document.getElementById('pauseButton').disabled = true;
+      document.getElementById('startButton').disabled = false;
+      clearInterval(intervalId);
+    }
+
+  }, intervalStep);
+
+}
+
 </script>
+</body>
+</html>
