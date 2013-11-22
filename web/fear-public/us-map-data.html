@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+body {
+  background-color: #103;
+}
+
+#land {
+  fill: #025;
+  stroke: #fff;
+  stroke-linejoin: round;
+}
+
+#states {
+  fill: #025;
+  stroke: #555;
+  stroke-linejoin: round;
+}
+
+</style>
+<body>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://d3js.org/topojson.v1.min.js"></script>
+<script>
+
+
+var width = 960,
+    height = 600,
+    fear_data,
+    colors = {};
+
+colors['evtype1'] = 'red';
+colors['evtype2'] = 'green';
+colors['evtype3'] = 'yellow';
+colors['evtype4'] = 'orange';
+colors['evtype5'] = 'white';
+
+var projection = d3.geo.azimuthalEqualArea()
+    .scale(width)
+    .translate([33.5, 262.5])
+    .rotate([100, -45])
+    .center([-17.6076, -4.7913])
+    .scale(1297);
+
+var path = d3.geo.path()
+    .projection(projection);
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+d3.json("us.json", function(error, us) {
+  var defs = svg.append("defs");
+
+  defs.append("path")
+      .datum(topojson.feature(us, us.objects.states))
+      .attr("id", "states")
+      .attr("d", path);
+
+  svg.append("clipPath")
+      .attr("id", "clip")
+    .append("use")
+      .attr("xlink:href", "#states");
+
+  d3.csv("fear.csv", function(data) { 
+
+    fear_data = data;
+
+  });
+
+  svg.append("use")
+      .attr("xlink:href", "#states");
+});
+
+d3.select(self.frameElement).style("height", height + "px");
+
+var intervalId = setInterval(function() {
+
+  svg.selectAll('circle')
+      .data(fear_data, function(d) { return d.id; })
+      .enter().append('circle')
+        .attr('cx', function (d) { return projection([d.longitude, d.latitude])[0]; })
+        .attr('cy', function (d) { return projection([d.longitude, d.latitude])[1]; })
+        .attr('r', function(d) { return 1; })
+        .attr('fill', function(d) { return colors[d.type]; })
+      .transition()
+        .attr('r', function(d) { return 5; })
+        .duration(2000)
+        .style('opacity', 0.05)
+      .transition()
+        .attr('r', function(d) { return 1; })
+        .attr('fill', function(d) { return colors[d.type]; })
+        .duration(1)
+        .style('opacity', 1);
+
+  clearInterval(intervalId);
+
+}, 1000);
+
+</script>

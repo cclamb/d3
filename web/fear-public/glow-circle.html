@@ -1,0 +1,68 @@
+<html>
+<body onclick="start();" bgcolor="black">
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script>
+
+var width = 500, 
+  height = width,
+  offset = 100,
+  data = [25],
+  xition = false;
+
+generator = function() { return (Math.random() *  (width - offset * 2)) + offset; }
+
+var svg = d3.select("body").append("svg")
+  .attr("width", width)
+  .attr("height", height);
+
+// var enter = svg.selectAll("circle")
+//   .data(data)
+//   .enter()
+//   .append("circle")
+//   .style("fill", "navy")
+//   .attr("r", function(datum) {
+//     return datum;
+//   })
+//   .attr("cx", function() {
+//     return generator();
+//   })
+//   .attr("cy", function() {
+//     return generator();
+//   });
+
+var enter = svg.selectAll("circle")
+  .data(data)
+  .enter()
+  .append("circle")
+  .style("stroke", "white")
+  .style("stroke-width", 100)
+  .style("fill", "white")
+  .attr("r", function(d) {
+    return d;
+  })
+  .attr("cx", 300)
+  .attr("cy", 300);
+
+function start() {
+    if (!xition) {
+      enter.transition()
+        .attr("r", 100)
+        .duration(1000)
+        .style("fill", "orange")
+        .style("opacity", 0)
+        .style("lighting-color", "red");
+      xition = true;
+    } else {
+      enter.attr("r", function(d) {
+          return d;
+        })
+        .style("fill", "navy")
+        .style("opacity", 100);
+      xition = false;
+    }
+
+}
+
+</script>
+</body>
+</html>

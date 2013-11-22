@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<title>FEAR Representation</title>
+<body>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script>
+
+var width = 960,
+    height = 500,
+    radius = 1,
+    svg = d3.select("body").append("svg")
+        .attr("height", height)
+        .attr("width", width)
+    .attr("color", "red")
+        .append("g")
+        .attr("transform", "translate(32," + (height/2) +")");
+
+d3.csv("fear.csv", function(data) { 
+  var enter = svg.selectAll("circle")
+    .data(data, function(d) { return d.id; })
+    .enter()
+    .append("circle")
+    .style("fill", "navy")
+    .attr("r", radius)
+    .attr("cx", function(d) { 
+        var lat = (parseFloat(d.latitude) - 24) * 960 / (50 - 24);
+        return lat; 
+    })
+    .attr("cy", function(d) { 
+        var lon = (-parseFloat(d.longitude) - 66) * 500 / (125 - 66)
+        return -lon; 
+    });
+});
+
+</script>
+</body>
+</html>

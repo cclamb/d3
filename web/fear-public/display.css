@@ -1,0 +1,103 @@
+
+body {
+  background-color: #103;
+  font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+
+thead {
+  background: white;
+  background-color: red;
+  color: white;
+}
+
+.buttons {
+  background-color: #aaf;
+  border-color: #aaf #aad #aab;
+  width: 100px;
+  height: 20px;
+}
+
+.buttons:disabled {
+  background-color: #aaf;
+}
+
+.date {
+  color: #ddf;
+}
+
+.evt1legend {
+  color: red;
+}
+
+.evt2legend {
+  color: green;
+}
+
+.evt3legend {
+  color: yellow;
+}
+
+.evt4legend {
+  color: orange;
+}
+
+.evt5legend {
+  color: white;
+}
+
+.control {
+  margin: 2px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #555;
+  background-color: #025;
+}
+
+#control-panel {
+  position: absolute;
+  top: 300px;
+  left: 900px;
+  width: 100px;
+  height: 180px;
+}
+
+#legend {
+  position: absolute;
+  width: 100px;
+  top: 500px;
+  left: 900px;
+}
+
+#display {
+  width: 960px;
+  height: 600px;
+}
+
+#overlay {
+  position: absolute;
+  top: 500px;
+  width: 200px;
+  height: 100px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #555;
+}
+
+#land {
+  fill: #025;
+  stroke: #fff;
+  stroke-linejoin: round;
+}
+
+#states {
+  fill: #025;
+  stroke: #555;
+  stroke-linejoin: round;
+}
+
+#title {
+  position: absolute;
+  top: 5px;
+  left: 300px;
+  color: white;
+}
