@@ -3,7 +3,7 @@ describe('Philly crime data', function() {
   var DATA_SIZE       = 1008448,
       FIELDS          = ['longitude', 'latitude', 'x', 'y', 'calc'],
       DATA_FILE_NAME  = 'philly-crime.csv',
-      TIMEOUT         = 1000;
+      TIMEOUT         = 5000;
 
   var loaded_data;
 
