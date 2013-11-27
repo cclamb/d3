@@ -30,8 +30,6 @@ d3.json("philadelphia.json", function(error, philadelphia) {
 
 });
 
-d3.select(self.frameElement).style("height", height + "px");
-
 // Loading and displaying the crime data.
 d3.csv('philly-crime.csv', function(data) {
 
