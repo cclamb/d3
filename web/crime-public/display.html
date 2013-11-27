@@ -12,23 +12,9 @@
 
 </style>
 
+<!-- The page title heading. -->
 <div id="title">
   Crimes in Philadelphia
-</div>
-
-<!-- This is the control panel element that controls animations. -->
-<div id="control-panel" class="control">
-  <button class="buttons" 
-    id="startButton" 
-    type="button" 
-    onclick="startAnimation();">start</button>
-  <button class="buttons" 
-    id="pauseButton" 
-    type="button"
-    disabled="disabled"
-    onclick="pauseAnimation();">pause</button>
-  <span class="date">Simulation Date: </span>
-  <span id="simDate" class="date"></span>
 </div>
 
 <!-- The primary display container. -->
@@ -40,14 +26,12 @@
 <div id="legend" class="control">
   <table>
     <tbody>
-      <tr><td class="evt1legend">Event Type 1</td></tr>
-      <tr><td class="evt2legend">Event Type 2</td></tr>
-      <tr><td class="evt3legend">Event Type 3</td></tr>
-      <tr><td class="evt4legend">Event Type 4</td></tr>
-      <tr><td class="evt5legend">Event Type 5</td></tr>
+      <tr><td class="evt1legend">Reported Crime Location</td></tr>
     </tbody>
   </table>
 </div>
+
+<!-- Loading the javascript to render data. -->
 <script src="js/display.js"></script>
 </body>
 </html>
