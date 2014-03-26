@@ -1,0 +1,26 @@
+[
+    {
+        "time-stamp": "2014-02-25 12:07:36",
+        "store-time": 0,
+        "total-records": 9,
+        "fetch-time": 10958,
+        "bad-records": 0,
+        "processed-records":0
+    },
+    {
+        "time-stamp": "2014-02-25 12:14:26",
+        "store-time": 0,
+        "total-records": 9,
+        "fetch-time": 6861,
+        "bad-records": 0,
+        "processed-records":0
+    },
+    {
+        "time-stamp": "2014-02-25 12:21:06",
+        "store-time": 0,
+        "total-records": 9,
+        "fetch-time": 6190,
+        "bad-records": 0,
+        "processed-records":0
+    }
+]

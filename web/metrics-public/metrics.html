@@ -1,0 +1,217 @@
+<!--
+  To change this license header, choose License Headers in Project Properties.
+  To change this template file, choose Tools | Templates
+  and open the template in the editor.
+-->
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Sample title</title>
+    </head>
+    <body>
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="http://d3js.org/topojson.v1.min.js"></script>
+        <h1>Sample line</h1>
+        
+        <!-- The primary display container. -->
+ <!--       <div id="display-container">
+            <svg id="display"/>
+        </div> -->
+        
+        
+        <center>
+        <div id="paired-line-chart" bgcolor="red">
+            <br/>
+        </div>
+        
+        <script type="text/javascript">
+            
+        var width = 960,    // SVG area width
+            height = 600,   // And height
+            size = 1;       // Crime marker size.
+            
+ 
+            
+        // Selecting the original SVG area within the browser window.
+        var svg = d3.select("#display")
+            .attr("width", width)
+            .attr("height", height);
+        
+        // Loading JSON data.
+        d3.json('metrics.json', function(data) {
+
+            var label_array = [],
+                val_array1 = [];
+                
+            var sampsize = 3,
+                minval = 0,
+                maxval = 0;
+                
+            //for (var i = 0; i < sampsize; i++) {
+            var i = 0;
+            for (var idx in data) {
+                var element = data[idx],
+                    time_stamp = element["time-stamp"],
+                    total_records = element["total-records"],
+                    i = parseInt(idx);
+
+                console.debug(i);
+                label_array[i] = i;
+                val_array1[i] = { x: label_array[i], y: parseFloat(total_records), z: parseFloat(total_records) };
+                maxval = Math.max(maxval, parseFloat(total_records), parseFloat(total_records));
+                minval = Math.min(minval, parseFloat(total_records), parseFloat(total_records))
+                //i++;
+            }
+
+            // for (var idx in data) {
+            //     var element = data[idx],
+            //         time_stamp = element["time-stamp"],
+            //         total_records = element["total-records"],
+            //         i = parseInt(idx);
+
+            //     label_array[i] = i;
+            //     val_array1[i] = { x: label_array[i], y: parseFloat(i), z: parseFloat(i) };
+            //     maxval = Math.max(maxval, parseFloat(i), parseFloat(i));
+
+            //     //label_array.push(parseInt(i));
+            //     //val_array1.push({ x: label_array[i], y: parseFloat(i), z: parseFloat(i) });
+            //     //label_array.push(time_stamp)
+            //     //val_array1[i] = { x: label_array[i], y: parseFloat(i), z: parseFloat(i) };
+            //     //val_array1.push({ x: parseInt(i), y: parseFloat(total_records), z: parseFloat(total_records) });
+            //     //maxval = Math.max(maxval, parseFloat(i), parseFloat(i));
+            // }
+
+            var w = 815,
+                h = 500,
+                p = 30,
+                maxval =  maxval + 2, //(1 + Math.floor(maxval / 10)) * 10,
+                minval = minval - 3, //(Math.floor(minval / 10) - 1) * 10,
+                x = d3.scale.linear().domain([ label_array[0], label_array[sampsize-1] ]).range([0, w]),
+                y = d3.scale.linear().domain([0, maxval]).range([h, 0]);
+
+            var vis = d3.select("#paired-line-chart")
+                .data([val_array1])
+                .append("svg:svg")
+                .attr("width", w + p * 2)
+                .attr("height", h + p * 2)
+                .append("svg:g")
+                .attr("transform", "translate(" + p + "," + p + ")");
+
+            var rules = vis.selectAll("g.rule")
+                .data(x.ticks(15))
+                .enter().append("svg:g")
+                .attr("class", "rule");
+                
+       // -----------------------------
+       // Draw Grid
+       // ----------------------------- 
+            rules.append("svg:line")
+                .attr("stroke", "lightgrey")
+                .attr("x1", x)
+                .attr("x2", x)
+                .attr("y1", 0)
+                .attr("y2", h);
+
+            rules.append("svg:line")
+                .attr("class", function(d) { return d ? null : "axis"; })
+                .data(y.ticks(10))
+                .attr("stroke", "lightgrey")
+                .attr("y1", y)
+                .attr("y2", y)
+                .attr("x1", 0)
+                .attr("x2", w);
+
+            // Place axis tick labels
+            rules.append("svg:text")
+                .attr("x", x)
+                .attr("y", h + 15)
+                .attr("dy", ".71em")
+                .attr("text-anchor", "middle")
+                .text(x.tickFormat(10))
+                .text(String);
+
+            rules.append("svg:text")
+                .data(y.ticks(12))
+                .attr("y", y)
+                .attr("x", -10)
+                .attr("dy", ".35em")
+                .attr("text-anchor", "end")
+                .text(y.tickFormat(5));
+
+       // -----------------------------
+       // Add Title then Legend
+       // -----------------------------            
+
+            vis.append("svg:text")
+                .attr("x", w/4)
+                .attr("y", 20)
+                .text("% share of income (excluding capital gains): U.S. 1920-2008");
+
+            vis.append("svg:rect")
+                .attr("x", w/2 - 20)
+                .attr("y", 50)
+                .attr("stroke", "darkblue")
+                .attr("height", 2)
+                .attr("width", 40);
+
+            vis.append("svg:text")
+                .attr("x", 30 + w/2)
+                .attr("y", 55)
+                .text("Top 5% households");
+
+            vis.append("svg:rect")
+                .attr("x", w/2 - 20)
+                .attr("y", 80)
+                .attr("stroke", "maroon")
+                .attr("height", 2)
+                .attr("width", 40);
+
+            vis.append("svg:text")
+                .attr("x", 30 + w/2)
+                .attr("y", 85)
+                .text("Top 1% households");
+                
+            // Series I
+            vis.append("svg:path")
+                .attr("class", "line")
+                .attr("fill", "none")
+                .attr("stroke", "maroon")
+                .attr("stroke-width", 2)
+                .attr("d", d3.svg.line()
+                  .x(function(d) { return x(d.x); })
+                  .y(function(d) { return y(d.y); }));
+
+            vis.selectAll("circle.line")
+                .data(val_array1)
+              .enter().append("svg:circle")
+                .attr("class", "line")
+                .attr("fill", "maroon" )
+                .attr("cx", function(d) { return x(d.x); })
+                .attr("cy", function(d) { return y(d.y); })
+                .attr("r", 1);
+
+            // Series II
+            vis.append("svg:path")
+                .attr("class", "line")
+                .attr("fill", "none")
+                .attr("stroke", "darkblue")
+                .attr("stroke-width", 2)
+                .attr("d", d3.svg.line()
+                  .x(function(d) { return x(d.x); })
+                  .y(function(d) { return y(d.z - 0.1); }));
+
+            vis.select("circle.line")
+                .data(val_array1)
+              .enter().append("svg:circle")
+                .attr("class", "line")
+                .attr("fill", "darkblue" )
+                .attr("cx", function(d) { return x(d.x); })
+                .attr("cy", function(d) { return y(d.z); })
+                .attr("r", 1);
+                
+        });
+        
+        </script>
+        </center>
+    </body>
+</html>
