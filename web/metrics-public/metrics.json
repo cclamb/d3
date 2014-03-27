@@ -10,7 +10,7 @@
     {
         "time-stamp": "2014-02-25 12:14:26",
         "store-time": 0,
-        "total-records": 9,
+        "total-records": 11,
         "fetch-time": 6861,
         "bad-records": 0,
         "processed-records":0
@@ -18,7 +18,79 @@
     {
         "time-stamp": "2014-02-25 12:21:06",
         "store-time": 0,
+        "total-records": 6,
+        "fetch-time": 6190,
+        "bad-records": 0,
+        "processed-records":0
+    },
+    {
+        "time-stamp": "2014-02-25 12:22:36",
+        "store-time": 0,
         "total-records": 9,
+        "fetch-time": 10958,
+        "bad-records": 0,
+        "processed-records":0
+    },
+    {
+        "time-stamp": "2014-02-25 12:24:26",
+        "store-time": 0,
+        "total-records": 11,
+        "fetch-time": 6861,
+        "bad-records": 0,
+        "processed-records":0
+    },
+    {
+        "time-stamp": "2014-02-25 12:26:06",
+        "store-time": 0,
+        "total-records": 6,
+        "fetch-time": 6190,
+        "bad-records": 0,
+        "processed-records":0
+    },
+    {
+        "time-stamp": "2014-02-25 12:32:36",
+        "store-time": 0,
+        "total-records": 9,
+        "fetch-time": 10958,
+        "bad-records": 0,
+        "processed-records":0
+    },
+    {
+        "time-stamp": "2014-02-25 12:45:26",
+        "store-time": 0,
+        "total-records": 11,
+        "fetch-time": 6861,
+        "bad-records": 0,
+        "processed-records":0
+    },
+    {
+        "time-stamp": "2014-02-25 12:47:06",
+        "store-time": 0,
+        "total-records": 6,
+        "fetch-time": 6190,
+        "bad-records": 0,
+        "processed-records":0
+    },
+    {
+        "time-stamp": "2014-02-25 12:52:36",
+        "store-time": 0,
+        "total-records": 9,
+        "fetch-time": 10958,
+        "bad-records": 0,
+        "processed-records":0
+    },
+    {
+        "time-stamp": "2014-02-25 12:54:26",
+        "store-time": 0,
+        "total-records": 11,
+        "fetch-time": 6861,
+        "bad-records": 0,
+        "processed-records":0
+    },
+    {
+        "time-stamp": "2014-02-25 12:25:06",
+        "store-time": 0,
+        "total-records": 6,
         "fetch-time": 6190,
         "bad-records": 0,
         "processed-records":0

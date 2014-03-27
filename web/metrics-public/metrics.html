@@ -11,6 +11,8 @@
     <body>
         <script src="http://d3js.org/d3.v3.min.js"></script>
         <script src="http://d3js.org/topojson.v1.min.js"></script>
+        <script src="http://underscorejs.org/underscore-min.js"></script>
+        <script src="util.js"></script>
         <h1>Sample line</h1>
         
         <!-- The primary display container. -->
@@ -30,8 +32,6 @@
             height = 600,   // And height
             size = 1;       // Crime marker size.
             
- 
-            
         // Selecting the original SVG area within the browser window.
         var svg = d3.select("#display")
             .attr("width", width)
@@ -45,7 +45,13 @@
                 
             var sampsize = 3,
                 minval = 0,
-                maxval = 0;
+                maxval = 0,
+                processed_data = Processor.process_data(data),
+                mean = Statistics.mean(processed_data.total_records),
+                std_deviation = Statistics.standard_deviation(processed_data.total_records);
+
+            console.log(mean);
+            console.log(std_deviation);
                 
             //for (var i = 0; i < sampsize; i++) {
             var i = 0;
@@ -59,7 +65,7 @@
                 label_array[i] = i;
                 val_array1[i] = { x: label_array[i], y: parseFloat(total_records), z: parseFloat(total_records) };
                 maxval = Math.max(maxval, parseFloat(total_records), parseFloat(total_records));
-                minval = Math.min(minval, parseFloat(total_records), parseFloat(total_records))
+                minval = Math.min(maxval, parseFloat(total_records), parseFloat(total_records))
                 //i++;
             }
 
@@ -85,7 +91,7 @@
                 h = 500,
                 p = 30,
                 maxval =  maxval + 2, //(1 + Math.floor(maxval / 10)) * 10,
-                minval = minval - 3, //(Math.floor(minval / 10) - 1) * 10,
+                minval = minval - 2, //(Math.floor(minval / 10) - 1) * 10,
                 x = d3.scale.linear().domain([ label_array[0], label_array[sampsize-1] ]).range([0, w]),
                 y = d3.scale.linear().domain([0, maxval]).range([h, 0]);
 
@@ -140,36 +146,51 @@
 
        // -----------------------------
        // Add Title then Legend
-       // -----------------------------            
+       // -----------------------------   
+
+                vis.append("svg:text")
+                    .attr("x", w/4)
+                    .attr("y", 20)
+                    .text("Total Records Injested");
 
             vis.append("svg:text")
-                .attr("x", w/4)
-                .attr("y", 20)
-                .text("% share of income (excluding capital gains): U.S. 1920-2008");
-
-            vis.append("svg:rect")
-                .attr("x", w/2 - 20)
-                .attr("y", 50)
-                .attr("stroke", "darkblue")
-                .attr("height", 2)
-                .attr("width", 40);
-
-            vis.append("svg:text")
-                .attr("x", 30 + w/2)
+                .attr("x", 30 + w/4)
                 .attr("y", 55)
-                .text("Top 5% households");
-
-            vis.append("svg:rect")
-                .attr("x", w/2 - 20)
-                .attr("y", 80)
-                .attr("stroke", "maroon")
-                .attr("height", 2)
-                .attr("width", 40);
+                .text("Mean: " + mean);
 
             vis.append("svg:text")
-                .attr("x", 30 + w/2)
+                .attr("x", 30 + w/4)
                 .attr("y", 85)
-                .text("Top 1% households");
+                .text("Deviation: " + std_deviation);
+
+            // vis.append("svg:text")
+            //     .attr("x", w/4)
+            //     .attr("y", 20)
+            //     .text("% share of income (excluding capital gains): U.S. 1920-2008");
+
+            // vis.append("svg:rect")
+            //     .attr("x", w/2 - 20)
+            //     .attr("y", 50)
+            //     .attr("stroke", "darkblue")
+            //     .attr("height", 2)
+            //     .attr("width", 40);
+
+            // vis.append("svg:text")
+            //     .attr("x", 30 + w/2)
+            //     .attr("y", 55)
+            //     .text("Top 5% households");
+
+            // vis.append("svg:rect")
+            //     .attr("x", w/2 - 20)
+            //     .attr("y", 80)
+            //     .attr("stroke", "maroon")
+            //     .attr("height", 2)
+            //     .attr("width", 40);
+
+            // vis.append("svg:text")
+            //     .attr("x", 30 + w/2)
+            //     .attr("y", 85)
+            //     .text("Top 1% households");
                 
             // Series I
             vis.append("svg:path")
@@ -191,23 +212,23 @@
                 .attr("r", 1);
 
             // Series II
-            vis.append("svg:path")
-                .attr("class", "line")
-                .attr("fill", "none")
-                .attr("stroke", "darkblue")
-                .attr("stroke-width", 2)
-                .attr("d", d3.svg.line()
-                  .x(function(d) { return x(d.x); })
-                  .y(function(d) { return y(d.z - 0.1); }));
+            // vis.append("svg:path")
+            //     .attr("class", "line")
+            //     .attr("fill", "none")
+            //     .attr("stroke", "darkblue")
+            //     .attr("stroke-width", 2)
+            //     .attr("d", d3.svg.line()
+            //       .x(function(d) { return x(d.x); })
+            //       .y(function(d) { return y(d.z - 0.1); }));
 
-            vis.select("circle.line")
-                .data(val_array1)
-              .enter().append("svg:circle")
-                .attr("class", "line")
-                .attr("fill", "darkblue" )
-                .attr("cx", function(d) { return x(d.x); })
-                .attr("cy", function(d) { return y(d.z); })
-                .attr("r", 1);
+            // vis.select("circle.line")
+            //     .data(val_array1)
+            //   .enter().append("svg:circle")
+            //     .attr("class", "line")
+            //     .attr("fill", "darkblue" )
+            //     .attr("cx", function(d) { return x(d.x); })
+            //     .attr("cy", function(d) { return y(d.z); })
+            //     .attr("r", 1);
                 
         });
         
