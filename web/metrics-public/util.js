@@ -31,12 +31,20 @@ var Processor = function() {
 		process_data: function(data) {
             var ret = {
                 total_records: [],
-                time_stamps: []
+                time_stamps: [],
+                store_time: [],
+                fetch_time: [],
+                bad_records: [],
+                processed_records: []
             };
 
             _.each(data, function(e) {
                 ret.total_records.push(e['total-records']);
                 ret.time_stamps.push(e['time-stamp']);
+                ret.store_time.push(e['store-time']);
+                ret.fetch_time.push(e['fetch-time']);
+                ret.bad_records.push(e['bad-records']);
+                ret.processed_records.push(e['processed-records']);
             });
 
             return ret;

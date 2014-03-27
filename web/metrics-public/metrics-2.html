@@ -6,7 +6,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Sample title</title>
+        <title>Record Ingestion Status</title>
     </head>
     <body>
         <script src="http://d3js.org/d3.v3.min.js"></script>
@@ -15,85 +15,70 @@
         <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
         <script src="Chart.min.js"></script>
         <script src="util.js"></script>
-        <h1>Sample line</h1>
-        
-        <!-- The primary display container. -->
- <!--       <div id="display-container">
-            <svg id="display"/>
-        </div> -->
-        
-        
+        <style>
+
+        #legend {
+          position: absolute;
+          width: 188px;
+          top: 80px;
+          left: 1300px;
+        }
+
+        #title {
+          position: absolute;
+          width: 188px;
+          top: 20px;
+          left: 500px;
+        }
+
+        </style>
+        <div id="legend">
+            <span style="color: rgb(151,187,205)">Total Records</span><br>
+            <span style="color: rgb(100,205,100)">Processed Records</span><br>
+            <span style="color: rgb(205,100,100)">Bad Records</span><br>
+        </div>
+
+        <div id="title">
+            <b>Record Ingestion Status</b>
+        </div>
+
         <center>
         <canvas id="myChart" width="1200" height="400"></canvas>
         
         <script type="text/javascript">
-            
-        // var width = 960,    // SVG area width
-        //     height = 600,   // And height
-        //     size = 1;       // Crime marker size.
-            
-        // // Selecting the original SVG area within the browser window.
-        // var svg = d3.select("#display")
-        //     .attr("width", width)
-        //     .attr("height", height);
         
         // Loading JSON data.
         d3.json('metrics.json', function(data) {
                 
-            var sampsize = 3,
-                minval = 0,
-                maxval = 0,
-                processed_data = Processor.process_data(data),
-                mean = Statistics.mean(processed_data.total_records),
-                std_deviation = Statistics.standard_deviation(processed_data.total_records);
-
-            console.log(mean);
-            console.log(std_deviation);
-
-            var ctx = $("#myChart").get(0).getContext("2d");
-
-            // var data = {
-            //     labels : ["January","February","March","April","May","June","July"],
-            //     datasets : [
-            //         {
-            //             fillColor : "rgba(220,220,220,0.5)",
-            //             strokeColor : "rgba(220,220,220,1)",
-            //             pointColor : "rgba(220,220,220,1)",
-            //             pointStrokeColor : "#fff",
-            //             data : [65,59,90,81,56,55,40]
-            //         },
-            //         {
-            //             fillColor : "rgba(151,187,205,0.5)",
-            //             strokeColor : "rgba(151,187,205,1)",
-            //             pointColor : "rgba(151,187,205,1)",
-            //             pointStrokeColor : "#fff",
-            //             data : [28,48,40,19,96,27,100]
-            //         }
-            //     ]
-            // }
-
-            var data = {
-                labels : processed_data.time_stamps,
-                datasets : [
-                    {
-                        fillColor : "rgba(220,220,220,0.5)",
-                        strokeColor : "rgba(220,220,220,1)",
-                        pointColor : "rgba(220,220,220,1)",
-                        pointStrokeColor : "#fff",
-                        data : processed_data.total_records
-                    },
-                    {
-                        fillColor : "rgba(151,187,205,0.5)",
-                        strokeColor : "rgba(151,187,205,1)",
-                        pointColor : "rgba(151,187,205,1)",
-                        pointStrokeColor : "#fff",
-                        data : [3,4,5,6,5,4,7,1,14,3,4,5]
-                    }
-                ]
-            }
-
-            new Chart(ctx).Line(data);
-                
+            var processed_data = Processor.process_data(data),
+                ctx = $("#myChart").get(0).getContext("2d"),
+                data = {
+                    labels : processed_data.time_stamps,
+                    datasets : [
+                        {
+                            fillColor : "rgba(151,187,205,0.5)",
+                            strokeColor : "rgba(151,187,205,1)",
+                            pointColor : "rgba(151,187,205,1)",
+                            pointStrokeColor : "#fff",
+                            data : processed_data.total_records
+                        },
+                        {
+                            fillColor : "rgba(100,205,100,0.5)",
+                            strokeColor : "rgba(100,205,100,1)",
+                            pointColor : "rgba(100,205,100,1)",
+                            pointStrokeColor : "#fff",
+                            data : processed_data.processed_records
+                        },
+                        {
+                            fillColor : "rgba(205,100,100,0.5)",
+                            strokeColor : "rgba(205,100,100,1)",
+                            pointColor : "rgba(205,100,100,1)",
+                            pointStrokeColor : "#fff",
+                            data : processed_data.bad_records
+                        }
+                    ]
+                },
+                chart = new Chart(ctx).Line(data);
         });
         
         </script>
