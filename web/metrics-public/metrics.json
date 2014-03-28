@@ -1,7 +1,7 @@
 [
     {
         "time-stamp": "2014-02-25 12:07:36",
-        "store-time": 1100,
+        "store-time": 11023,
         "total-records": 9,
         "fetch-time": 10958,
         "bad-records": 1,
@@ -9,7 +9,7 @@
     },
     {
         "time-stamp": "2014-02-25 12:14:26",
-        "store-time": 2301,
+        "store-time": 5010,
         "total-records": 11,
         "fetch-time": 6861,
         "bad-records": 2,
@@ -17,7 +17,7 @@
     },
     {
         "time-stamp": "2014-02-25 12:21:06",
-        "store-time": 845,
+        "store-time": 5789,
         "total-records": 6,
         "fetch-time": 6190,
         "bad-records": 1,
@@ -25,7 +25,7 @@
     },
     {
         "time-stamp": "2014-02-25 12:22:36",
-        "store-time": 0,
+        "store-time": 11937,
         "total-records": 9,
         "fetch-time": 10958,
         "bad-records": 0,
@@ -33,7 +33,7 @@
     },
     {
         "time-stamp": "2014-02-25 12:24:26",
-        "store-time": 0,
+        "store-time": 5785,
         "total-records": 11,
         "fetch-time": 6861,
         "bad-records": 1,
@@ -41,7 +41,7 @@
     },
     {
         "time-stamp": "2014-02-25 12:26:06",
-        "store-time": 0,
+        "store-time": 3452,
         "total-records": 6,
         "fetch-time": 6190,
         "bad-records": 3,
@@ -49,7 +49,7 @@
     },
     {
         "time-stamp": "2014-02-25 12:32:36",
-        "store-time": 0,
+        "store-time": 10534,
         "total-records": 9,
         "fetch-time": 10958,
         "bad-records": 0,
@@ -57,7 +57,7 @@
     },
     {
         "time-stamp": "2014-02-25 12:45:26",
-        "store-time": 0,
+        "store-time": 6998,
         "total-records": 11,
         "fetch-time": 6861,
         "bad-records": 0,
@@ -65,7 +65,7 @@
     },
     {
         "time-stamp": "2014-02-25 12:47:06",
-        "store-time": 0,
+        "store-time": 6748,
         "total-records": 6,
         "fetch-time": 6190,
         "bad-records": 0,
@@ -73,7 +73,7 @@
     },
     {
         "time-stamp": "2014-02-25 12:52:36",
-        "store-time": 0,
+        "store-time": 12998,
         "total-records": 9,
         "fetch-time": 10958,
         "bad-records": 1,
@@ -81,7 +81,7 @@
     },
     {
         "time-stamp": "2014-02-25 12:54:26",
-        "store-time": 0,
+        "store-time": 4563,
         "total-records": 11,
         "fetch-time": 6861,
         "bad-records": 4,
@@ -89,7 +89,7 @@
     },
     {
         "time-stamp": "2014-02-25 12:25:06",
-        "store-time": 0,
+        "store-time": 4632,
         "total-records": 6,
         "fetch-time": 6190,
         "bad-records": 2,

@@ -12,38 +12,69 @@
         <script src="http://d3js.org/d3.v3.min.js"></script>
         <script src="http://d3js.org/topojson.v1.min.js"></script>
         <script src="http://underscorejs.org/underscore-min.js"></script>
-        <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="http://code.jquery.com/jquery-1.11.0.js"></script>
         <script src="Chart.min.js"></script>
         <script src="util.js"></script>
         <style>
 
-        #legend {
+        #record_legend {
           position: absolute;
           width: 188px;
           top: 80px;
-          left: 1300px;
+          left: 1010px;
         }
 
-        #title {
+        #record_title {
           position: absolute;
           width: 188px;
           top: 20px;
-          left: 500px;
+          left: 150px;
+        }
+
+        #time_legend {
+          position: absolute;
+          width: 188px;
+          top: 480px;
+          left: 1010px;
+        }
+
+        #time_title {
+          position: absolute;
+          width: 188px;
+          top: 420px;
+          left: 150px;
         }
 
         </style>
-        <div id="legend">
+
+        <div id="record_legend">
             <span style="color: rgb(151,187,205)">Total Records</span><br>
             <span style="color: rgb(100,205,100)">Processed Records</span><br>
             <span style="color: rgb(205,100,100)">Bad Records</span><br>
         </div>
 
-        <div id="title">
+        <div id="record_title">
             <b>Record Ingestion Status</b>
         </div>
 
-        <center>
-        <canvas id="myChart" width="1200" height="400"></canvas>
+        <canvas id="record_chart" width="1200" height="400"></canvas>
+
+        <div id="record_legend">
+            <span style="color: rgb(151,187,205)">Total Records</span><br>
+            <span style="color: rgb(100,205,100)">Processed Records</span><br>
+            <span style="color: rgb(205,100,100)">Bad Records</span><br>
+        </div>
+
+        <div id="time_title">
+            <b>Fetch and Store Time</b>
+        </div>
+
+        <div id="time_legend">
+            <span style="color: rgb(151,187,205)">Fetch Time (ms)</span><br>
+            <span style="color: rgb(100,205,100)">Store Time (ms)</span><br>
+        </div>
+
+        <canvas id="time_chart" width="1200" height="400"></canvas>
         
         <script type="text/javascript">
         
@@ -51,7 +82,8 @@
         d3.json('metrics.json', function(data) {
                 
             var processed_data = Processor.process_data(data),
-                ctx = $("#myChart").get(0).getContext("2d"),
+                ctx = $("#record_chart").get(0).getContext("2d"),
+                time_ctx = $("#time_chart").get(0).getContext("2d"),
                 data = {
                     labels : processed_data.time_stamps,
                     datasets : [
@@ -78,10 +110,30 @@
                         }
                     ]
                 },
-                chart = new Chart(ctx).Line(data);
+                time_data = {
+                    labels : processed_data.time_stamps,
+                    datasets : [
+                        {
+                            fillColor : "rgba(151,187,205,0.5)",
+                            strokeColor : "rgba(151,187,205,1)",
+                            pointColor : "rgba(151,187,205,1)",
+                            pointStrokeColor : "#fff",
+                            data : processed_data.fetch_time
+                        },
+                        {
+                            fillColor : "rgba(100,205,100,0.5)",
+                            strokeColor : "rgba(100,205,100,1)",
+                            pointColor : "rgba(100,205,100,1)",
+                            pointStrokeColor : "#fff",
+                            data : processed_data.store_time
+                        }
+                    ]
+                },
+                record_chart = new Chart(ctx).Line(data),
+                time_chart = new Chart(time_ctx).Line(time_data);
         });
         
         </script>
-        </center>
+
     </body>
 </html>
